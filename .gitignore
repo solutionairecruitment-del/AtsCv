@@ -1,0 +1,86 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# C extensions
+*.so
+*.pyd
+*.dll
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+egss/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PEP 582; used by e.g. pipx
+__pypackages__/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.venv*/
+venv*/
+env*/
+
+# Unit test / coverage
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+.cache/
+
+# Logs
+*.log
+logs/
+
+# IDEs / editors
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Flask instance folder and local databases
+instance/
+database2.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment files (keep example tracked)
+.env
+.env.*
+!.env.example
+
+# Temporary files
+tmp/
+temp/
+~$*
+
+# Tooling configs (optional; keep if added explicitly)
+# .python-version
