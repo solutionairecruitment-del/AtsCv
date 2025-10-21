@@ -1,4 +1,4 @@
-# Resume Generator API (Flask + Gemini)
+# Resume Generator API 
 
 A Python/Flask REST API that extracts text from user resumes (PDF/JPG/PNG), leverages Google Gemini (Generative AI) to generate a structured, ATS‑friendly resume tailored to a provided job description, and stores results in a SQL database. Includes JWT‑based auth middleware, CORS, and SQLite/PostgreSQL support.
 
