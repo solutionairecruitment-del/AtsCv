@@ -1,0 +1,47 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+env/
+venv/
+ENV/
+VENV/
+
+# Local environment variables
+.env
+
+# OS files (macOS, Windows)
+.DS_Store
+Thumbs.db
+
+# Git files
+.git
+.gitignore
+
+# Editor settings
+.vscode/
+.idea/
+*.swp
+
+# Test and coverage outputs
+*.coverage
+htmlcov/
+.coverage.*
+
+# Logs
+*.log
+
+# Database/backups
+*.sqlite3
+*.db
+*.bak
+*.sql
+
+# Jupyter notebooks
+*.ipynb
+
+cloudbuild.yaml
+
