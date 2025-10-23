@@ -100,22 +100,144 @@ def extract_text_from_image_gemini(image_bytes):
         return ""
 
 
+# def get_structured_resume_with_feedback(resume_text, job_description):
+#     prompt = f"""
+# You are an expert resume writing assistant. Based on the following user resume and the job description, provide a structured, ATS-friendly resume and feedback.
+#
+# Analyze the resume and job description, then return the data in this EXACT JSON format:
+#
+# {{
+#     "name": "Full Name (if found, otherwise empty string)",
+#     "email": "email@example.com (if found, otherwise empty string)",
+#     "phone": "Phone number (if found, otherwise empty string)",
+#     "location": "City, State (if found, otherwise empty string)",
+#     "professional_summary": "2-3 sentence professional summary tailored to the job",
+#     "skills": [
+#         "Skill 1",
+#         "Skill 2",
+#         "Skill 3"
+#     ],
+#     "work_experience": [
+#         {{
+#             "company": "Company Name",
+#             "position": "Job Title",
+#             "duration": "Start Date - End Date",
+#             "location": "City, State",
+#             "responsibilities": [
+#                 "Responsibility 1 with metrics if available",
+#                 "Responsibility 2 with metrics if available"
+#             ]
+#         }}
+#     ],
+#     "projects": [
+#         {{
+#             "title": "Project Name",
+#             "technologies": ["Tech1", "Tech2"],
+#             "description": "Project description with impact",
+#             "link": "github.com/link (if available)"
+#         }}
+#     ],
+#     "education": [
+#         {{
+#             "degree": "Degree Name",
+#             "institution": "School Name",
+#             "graduation_year": "Year",
+#             "location": "City, State",
+#             "relevant_coursework": ["Course1", "Course2"]
+#         }}
+#     ],
+#     "certifications": [
+#         {{
+#             "name": "Certification Name",
+#             "issuer": "Issuing Organization",
+#             "date": "Date obtained",
+#             "expiry": "Expiry date (if applicable)"
+#         }}
+#     ],
+#     "ats_score": 85,
+#     "feedback": [
+#         "Feedback point 1: What was improved",
+#         "Feedback point 2: What was added",
+#         "Feedback point 3: What was missing"
+#     ]
+# }}
+#
+# Make sure to:
+# 1. Extract and enhance information from the original resume
+# 2. Tailor skills and experience to match the job description
+# 3. Use action verbs and quantify achievements where possible
+# 4. Include relevant keywords from the job description
+# 5. Provide constructive feedback on improvements made
+# 6. Calculate ATS score (0-100) based on resume's compatibility with the job description
+#
+# Original Resume:
+# {resume_text}
+#
+# Job Description:
+# {job_description}
+#
+# Return ONLY the JSON response, no additional text.
+# """
+#
+#     try:
+#         model_text = genai.GenerativeModel("gemini-2.0-flash-exp")
+#         response = model_text.generate_content(prompt)
+#         content = response.text.strip()
+#
+#         # Clean up the response to extract JSON
+#         if content.startswith("```json"):
+#             content = content[7:-3]
+#         elif content.startswith("```"):
+#             content = content[3:-3]
+#
+#         structured_data = json.loads(content)
+#         return structured_data
+#     except Exception as e:
+#         print("❌ Error generating structured resume with Gemini:", e)
+#         return {
+#             "name": "",
+#             "email": "",
+#             "phone": "",
+#             "location": "",
+#             "professional_summary": "",
+#             "skills": [],
+#             "work_experience": [],
+#             "projects": [],
+#             "education": [],
+#             "certifications": [],
+#             "ats_score": 0,
+#             "feedback": ["Error generating structured resume"]
+#         }
+
+
 def get_structured_resume_with_feedback(resume_text, job_description):
     prompt = f"""
-You are an expert resume writing assistant. Based on the following user resume and the job description, provide a structured, ATS-friendly resume and feedback.
+You are an expert resume writing assistant specializing in creating concise, impactful, ATS-friendly one-page resumes. 
 
-Analyze the resume and job description, then return the data in this EXACT JSON format:
+CRITICAL REQUIREMENTS:
+- The resume MUST fit on ONE PAGE when formatted
+- Prioritize quality over quantity - be selective and impactful
+- Each bullet point should be concise yet powerful (1-2 lines max)
+- Limit entries to most recent/relevant items only
+- Focus on achievements with metrics, not duties
+
+Based on the user's resume and job description, provide a structured resume optimized for ONE PAGE layout.
+
+Return data in this EXACT JSON format:
 
 {{
     "name": "Full Name (if found, otherwise empty string)",
     "email": "email@example.com (if found, otherwise empty string)",
     "phone": "Phone number (if found, otherwise empty string)",
     "location": "City, State (if found, otherwise empty string)",
-    "professional_summary": "2-3 sentence professional summary tailored to the job",
+    "professional_summary": "2-3 impactful sentences (40-60 words max) tailored to the job, highlighting key value proposition",
     "skills": [
         "Skill 1",
         "Skill 2",
-        "Skill 3"
+        "Skill 3",
+        "Skill 4",
+        "Skill 5",
+        "Skill 6"
     ],
     "work_experience": [
         {{
@@ -124,16 +246,17 @@ Analyze the resume and job description, then return the data in this EXACT JSON 
             "duration": "Start Date - End Date",
             "location": "City, State",
             "responsibilities": [
-                "Responsibility 1 with metrics if available",
-                "Responsibility 2 with metrics if available"
+                "Achievement-focused bullet with quantifiable impact (1-2 lines)",
+                "Another impactful achievement with metrics (1-2 lines)",
+                "Third key accomplishment if highly relevant (1-2 lines)"
             ]
         }}
     ],
     "projects": [
         {{
             "title": "Project Name",
-            "technologies": ["Tech1", "Tech2"],
-            "description": "Project description with impact",
+            "technologies": ["Tech1", "Tech2", "Tech3"],
+            "description": "Concise description focusing on impact and results (1-2 lines max)",
             "link": "github.com/link (if available)"
         }}
     ],
@@ -143,7 +266,7 @@ Analyze the resume and job description, then return the data in this EXACT JSON 
             "institution": "School Name",
             "graduation_year": "Year",
             "location": "City, State",
-            "relevant_coursework": ["Course1", "Course2"]
+            "relevant_coursework": ["Course1", "Course2", "Course3"]
         }}
     ],
     "certifications": [
@@ -156,19 +279,35 @@ Analyze the resume and job description, then return the data in this EXACT JSON 
     ],
     "ats_score": 85,
     "feedback": [
-        "Feedback point 1: What was improved",
-        "Feedback point 2: What was added",
-        "Feedback point 3: What was missing"
+        "Feedback point 1: What was improved or optimized for one-page format",
+        "Feedback point 2: What was prioritized/removed and why",
+        "Feedback point 3: How content was tailored to job requirements"
     ]
 }}
 
-Make sure to:
-1. Extract and enhance information from the original resume
-2. Tailor skills and experience to match the job description
-3. Use action verbs and quantify achievements where possible
-4. Include relevant keywords from the job description
-5. Provide constructive feedback on improvements made
-6. Calculate ATS score (0-100) based on resume's compatibility with the job description
+ONE-PAGE OPTIMIZATION GUIDELINES:
+1. **Skills**: Include 6-10 most relevant skills only (matching job description keywords)
+2. **Work Experience**: 
+   - Include only 2-3 most recent/relevant positions
+   - 2-3 bullet points per position maximum
+   - Each bullet: action verb + achievement + quantifiable result (keep under 2 lines)
+3. **Projects**: Include 2-3 most impressive projects only (prioritize those matching job requirements)
+4. **Education**: 1-2 entries max; omit irrelevant coursework if space is tight
+5. **Certifications**: Include only current, relevant certifications (2-4 max)
+6. **Professional Summary**: Must be impactful yet brief (40-60 words)
+
+CONTENT QUALITY RULES:
+- Every bullet point must demonstrate impact with metrics when possible
+- Use strong action verbs (Led, Architected, Increased, Reduced, Implemented)
+- Remove generic responsibilities; focus on achievements
+- Tailor content specifically to job description requirements
+- Remove outdated or irrelevant information ruthlessly
+
+ATS SCORE CALCULATION:
+- Keyword match with job description: 40%
+- Quantifiable achievements: 25%
+- Relevant skills coverage: 20%
+- Format and structure: 15%
 
 Original Resume:
 {resume_text}
@@ -176,7 +315,7 @@ Original Resume:
 Job Description:
 {job_description}
 
-Return ONLY the JSON response, no additional text.
+Return ONLY the JSON response, no additional text. Remember: ONE PAGE is mandatory - be selective and impactful!
 """
 
     try:
@@ -208,7 +347,6 @@ Return ONLY the JSON response, no additional text.
             "ats_score": 0,
             "feedback": ["Error generating structured resume"]
         }
-
 
 def get_or_create_user(email, username):
     """Get existing user or create new one"""
