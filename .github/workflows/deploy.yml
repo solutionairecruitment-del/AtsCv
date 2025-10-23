@@ -30,8 +30,8 @@ jobs:
 
       - name: Build and push Docker image to Artifact Registry
         run: |
-          docker build -t asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/flask-ats-repo/myflaskapp:$GITHUB_SHA .
-          docker push asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/flask-ats-repo/myflaskapp:$GITHUB_SHA
+          docker build -t asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/demo-deployment-repo/myflaskapp:$GITHUB_SHA .
+          docker push asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/demo-deployment-repo/myflaskapp:$GITHUB_SHA
 
       - name: Deploy to Cloud Run
         run: |
