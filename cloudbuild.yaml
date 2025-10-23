@@ -2,7 +2,7 @@
 substitutions:
   _SERVICE: "flask-ats-demo"
   _REGION: "asia-south1"
-  _REPO: "my-repo"
+  _REPO: "demo-deployment-repo"
 
 images:
   - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA"
