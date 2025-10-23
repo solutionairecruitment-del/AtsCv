@@ -1,0 +1,39 @@
+
+substitutions:
+  _SERVICE: "flask-ats-demo"
+  _REGION: "asia-south1"
+  _REPO: "my-repo"
+
+images:
+  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA"
+
+steps:
+- id: "Build image"
+  name: "gcr.io/cloud-builders/docker"
+  args:
+    - "build"
+    - "-t"
+    - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA"
+    - "."
+
+- id: "Push image"
+  name: "gcr.io/cloud-builders/docker"
+  args:
+    - "push"
+    - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA"
+
+- id: "Deploy to Cloud Run"
+  name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  entrypoint: "bash"
+  args:
+    - "-c"
+    - |
+      gcloud run deploy "${_SERVICE}" \
+        --image="${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_SERVICE}:$COMMIT_SHA" \
+        --region="${_REGION}" \
+        --platform=managed \
+        --allow-unauthenticated \
+        --quiet
+
+timeout: "1200s"
+
